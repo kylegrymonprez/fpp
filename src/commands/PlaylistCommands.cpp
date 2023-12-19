@@ -264,6 +264,7 @@ std::unique_ptr<Command::Result> PlaylistPauseCommand::run(const std::vector<std
 
 PlaylistResumeCommand::PlaylistResumeCommand() :
     Command("Resume Playlist") {
+        
 }
 std::unique_ptr<Command::Result> PlaylistResumeCommand::run(const std::vector<std::string>& args) {
     Player::INSTANCE.Resume();
