@@ -680,6 +680,7 @@ void Playlist::Resume() {
         std::unique_lock<std::recursive_mutex> lck(m_playlistMutex);
         if (m_status == FPP_STATUS_PLAYLIST_PAUSED) {
             m_currentSection->at(m_sectionPosition)->Resume();
+            PluginManager::INSTANCE.playlistCallback(GetInfo(), "resume", m_currentSectionStr, m_sectionPosition);
             m_status = FPP_STATUS_PLAYLIST_PLAYING;
 
             // Notify of current playlists because was likely changed when Paused.
@@ -987,9 +988,10 @@ void Playlist::SetIdle(bool exit) {
     m_status = FPP_STATUS_IDLE;
     m_currentState = "idle";
 
+    PluginManager::INSTANCE.playlistCallback(GetInfo(), "stop", m_currentSectionStr, m_sectionPosition);
+    
     Cleanup();
 
-    PluginManager::INSTANCE.playlistCallback(GetInfo(), "stop", m_currentSectionStr, m_sectionPosition);
 
     bool publishIdle = true;
     if (m_parent && exit) {
